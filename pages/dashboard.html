@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — EP Care Center</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div class="page-transition-overlay"></div>
+
+<div id="loading-screen">
+  <div class="loader-logo">EP Care Center</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-text">Memuat Dashboard</div>
+</div>
+
+<div class="aurora-bg">
+  <div class="aurora-orb"></div>
+  <div class="aurora-orb"></div>
+  <div class="aurora-orb"></div>
+</div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- ── Navigation ── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">EP<span>Care</span>Center</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Beranda</a></li>
+      <li><a href="about.html">Tentang</a></li>
+      <li><a href="gallery.html">Galeri</a></li>
+      <li><a href="team.html">Tim</a></li>
+      <li><a href="contact.html">Kontak</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="notif-bell" id="nav-notif-btn" title="Notifikasi">
+        🔔<span class="notif-count hidden" id="nav-notif-count">0</span>
+      </button>
+      <div class="nav-user-btn" id="nav-user-info" style="display:none">
+        <img class="nav-user-avatar" id="nav-avatar" src="" alt="" />
+        <span id="nav-username"></span>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="nav-logout-btn">Keluar</button>
+    </div>
+    <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="nav-mobile" id="nav-mobile">
+  <a href="../index.html">Beranda</a>
+  <a href="about.html">Tentang</a>
+  <a href="gallery.html">Galeri</a>
+  <a href="team.html">Tim</a>
+  <a href="contact.html">Kontak</a>
+</div>
+
+<!-- ── App Shell ── -->
+<div class="app-shell">
+  <!-- Auth guard message -->
+  <div id="auth-guard" class="hidden" style="display:flex;align-items:center;justify-content:center;min-height:80vh;flex-direction:column;gap:24px;text-align:center;padding:32px">
+    <div style="font-size:3rem">🔒</div>
+    <h2 style="font-family:var(--font-display);font-size:1.6rem;color:white">Akses Terbatas</h2>
+    <p style="color:rgba(255,255,255,0.5);max-width:360px">Kamu harus login menggunakan Google Account untuk mengakses dashboard.</p>
+    <button class="btn btn-primary btn-lg" id="guard-login-btn">Login dengan Google</button>
+  </div>
+
+  <!-- Main Dashboard (shown after auth) -->
+  <div id="dashboard-main" class="hidden">
+    <div class="page-container">
+      <div class="dashboard-layout">
+
+        <!-- ── Sidebar ── -->
+        <aside class="sidebar card" id="sidebar">
+          <!-- User Profile Mini -->
+          <div class="sidebar-profile">
+            <img id="sidebar-avatar" class="sidebar-avatar" src="" alt="" />
+            <div>
+              <div class="sidebar-name" id="sidebar-name">Pengguna</div>
+              <div class="sidebar-role" id="sidebar-role">Mahasiswa</div>
+            </div>
+          </div>
+          <div class="divider" style="margin:16px 0"></div>
+
+          <!-- Student Navigation -->
+          <nav class="sidebar-nav" id="student-nav">
+            <div class="sidebar-section-label">Mahasiswa</div>
+            <button class="sidebar-link active" id="link-overview" onclick="switchSection('overview')">
+              <span class="link-icon">🏠</span> Dashboard
+            </button>
+            <button class="sidebar-link" id="link-new-report" onclick="switchSection('new-report')">
+              <span class="link-icon">➕</span> Buat Laporan
+            </button>
+            <button class="sidebar-link" id="link-my-reports" onclick="switchSection('my-reports')">
+              <span class="link-icon">📋</span> Laporan Saya
+              <span class="link-badge hidden" id="badge-unread">0</span>
+            </button>
+            <button class="sidebar-link" id="link-profile" onclick="switchSection('profile')">
+              <span class="link-icon">👤</span> Profil
+            </button>
+          </nav>
+
+          <!-- Admin Navigation (hidden for mahasiswa) -->
+          <nav class="sidebar-nav hidden" id="admin-nav">
+            <div class="sidebar-section-label" style="margin-top:16px">Admin Panel</div>
+            <button class="sidebar-link" id="link-admin-dash" onclick="switchSection('admin-dash')">
+              <span class="link-icon">📊</span> Statistik
+            </button>
+            <button class="sidebar-link" id="link-all-reports" onclick="switchSection('all-reports')">
+              <span class="link-icon">📂</span> Semua Laporan
+              <span class="link-badge hidden" id="badge-admin-unread">0</span>
+            </button>
+            <button class="sidebar-link" id="link-users" onclick="switchSection('users')">
+              <span class="link-icon">👥</span> Pengguna
+            </button>
+            <button class="sidebar-link" id="link-gallery-mgmt" onclick="switchSection('gallery-mgmt')">
+              <span class="link-icon">🖼️</span> Galeri
+            </button>
+          </nav>
+        </aside>
+
+        <!-- ── Main Content ── -->
+        <main class="dash-main">
+
+          <!-- ─ Section: Student Overview ─ -->
+          <section id="section-overview">
+            <div class="page-header">
+              <div class="page-eyebrow">Dashboard</div>
+              <h1 class="page-title" id="welcome-title">Selamat Datang 👋</h1>
+              <p class="page-subtitle">Pantau dan kelola laporan kamu di sini.</p>
+            </div>
+
+            <!-- Stat Cards -->
+            <div class="grid-4 mb-6" id="student-stats">
+              <div class="card stat-card reveal">
+                <div class="stat-icon" style="background:rgba(77,159,255,0.1)">📤</div>
+                <div class="stat-label">Total Laporan</div>
+                <div class="stat-value" id="stat-total">0</div>
+              </div>
+              <div class="card stat-card reveal reveal-delay-1">
+                <div class="stat-icon" style="background:rgba(245,158,11,0.1)">⏳</div>
+                <div class="stat-label">Sedang Diproses</div>
+                <div class="stat-value" id="stat-active">0</div>
+              </div>
+              <div class="card stat-card reveal reveal-delay-2">
+                <div class="stat-icon" style="background:rgba(16,217,134,0.1)">✅</div>
+                <div class="stat-label">Selesai</div>
+                <div class="stat-value" id="stat-done">0</div>
+              </div>
+              <div class="card stat-card reveal reveal-delay-3">
+                <div class="stat-icon" style="background:rgba(107,114,128,0.1)">📭</div>
+                <div class="stat-label">Belum Direspons</div>
+                <div class="stat-value" id="stat-unread">0</div>
+              </div>
+            </div>
+
+            <!-- Recent Reports -->
+            <div class="card reveal">
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-ui" style="color:white;font-weight:700">Laporan Terbaru</h3>
+                <button class="btn btn-ghost btn-sm" onclick="switchSection('my-reports')">Lihat Semua →</button>
+              </div>
+              <div id="recent-reports-list">
+                <div class="empty-state">
+                  <div class="empty-icon">📭</div>
+                  <div class="empty-title">Belum ada laporan</div>
+                  <div class="empty-desc">Buat laporan pertamamu untuk memulai.</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ─ Section: New Report ─ -->
+          <section id="section-new-report" class="hidden">
+            <div class="page-header">
+              <div class="page-eyebrow">Buat Laporan</div>
+              <h1 class="page-title">Laporan Baru</h1>
+              <p class="page-subtitle">Sampaikan keluhan, aspirasi, atau konsultasimu dengan aman dan terstruktur.</p>
+            </div>
+
+            <div class="card reveal" style="max-width:720px">
+              <form id="report-form" onsubmit="submitReport(event)">
+                <!-- Category -->
+                <div class="form-group mb-6">
+                  <label class="form-label">Kategori Laporan <span>*</span></label>
+                  <div class="category-grid" id="category-grid">
+                    <button type="button" class="cat-btn" data-cat="academic">📚 Kendala Akademik</button>
+                    <button type="button" class="cat-btn" data-cat="lecturer">👨‍🏫 Kendala Dosen</button>
+                    <button type="button" class="cat-btn" data-cat="curhat">💬 Curhat Perkuliahan</button>
+                    <button type="button" class="cat-btn" data-cat="consultation">🤝 Konsultasi</button>
+                    <button type="button" class="cat-btn" data-cat="suggestion">💡 Saran</button>
+                    <button type="button" class="cat-btn" data-cat="complaint">😔 Keluhan</button>
+                    <button type="button" class="cat-btn" data-cat="aspiration">🚀 Aspirasi</button>
+                    <button type="button" class="cat-btn" data-cat="other">📌 Lainnya</button>
+                  </div>
+                  <input type="hidden" id="report-category" required />
+                </div>
+
+                <!-- Title -->
+                <div class="form-group mb-5">
+                  <label class="form-label" for="report-title">Judul Laporan <span>*</span></label>
+                  <input type="text" class="form-input" id="report-title" placeholder="Tuliskan judul yang singkat dan jelas..." required />
+                </div>
+
+                <!-- Description -->
+                <div class="form-group mb-5">
+                  <label class="form-label" for="report-desc">Deskripsi Lengkap <span>*</span></label>
+                  <textarea class="form-textarea" id="report-desc" rows="6" placeholder="Ceritakan masalah atau aspirasimu secara detail. Semakin detail, semakin mudah ditangani..." required style="min-height:150px"></textarea>
+                </div>
+
+                <!-- Urgency -->
+                <div class="form-group mb-5">
+                  <label class="form-label">Tingkat Urgensi <span>*</span></label>
+                  <div class="urgency-options" id="urgency-options">
+                    <button type="button" class="urgency-option" data-urg="low">🟢 Rendah</button>
+                    <button type="button" class="urgency-option" data-urg="medium">🟡 Sedang</button>
+                    <button type="button" class="urgency-option" data-urg="high">🔴 Tinggi</button>
+                    <button type="button" class="urgency-option" data-urg="critical">🚨 Kritis</button>
+                  </div>
+                  <input type="hidden" id="report-urgency" required />
+                </div>
+
+                <!-- File Upload -->
+                <div class="form-group mb-5">
+                  <label class="form-label">Lampiran (opsional)</label>
+                  <div class="file-upload-zone" id="upload-zone">
+                    <div class="file-upload-icon">📎</div>
+                    <div class="file-upload-text">
+                      <strong>Klik untuk upload</strong> atau drag & drop<br/>
+                      <span class="text-xs text-dim">PDF, Word, Excel, Gambar (max 10MB)</span>
+                    </div>
+                    <input type="file" id="report-files" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif" style="display:none" />
+                  </div>
+                  <div id="file-preview" class="file-preview-list"></div>
+                </div>
+
+                <!-- Anonymous toggle -->
+                <div class="form-group mb-6">
+                  <label class="flex items-center gap-3" style="cursor:pointer">
+                    <div class="toggle-switch">
+                      <input type="checkbox" id="report-anonymous" />
+                      <span class="toggle-slider"></span>
+                    </div>
+                    <span class="form-label" style="margin:0">Kirim Anonim</span>
+                    <span class="text-xs text-muted">(nama tersembunyi dari admin)</span>
+                  </label>
+                </div>
+
+                <div class="flex gap-3">
+                  <button type="submit" class="btn btn-primary" id="submit-report-btn">
+                    <span id="submit-text">Kirim Laporan</span>
+                    <span id="submit-spinner" class="hidden" style="display:inline-flex;align-items:center;gap:6px">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="animation:spin 0.8s linear infinite">
+                        <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="2" stroke-dasharray="28" stroke-dashoffset="10" stroke-linecap="round"/>
+                      </svg>
+                      Mengirim...
+                    </span>
+                  </button>
+                  <button type="button" class="btn btn-ghost" onclick="resetReportForm()">Reset</button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <!-- ─ Section: My Reports ─ -->
+          <section id="section-my-reports" class="hidden">
+            <div class="page-header">
+              <div class="page-eyebrow">Riwayat</div>
+              <h1 class="page-title">Laporan Saya</h1>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex gap-4 mb-6 flex-wrap items-center">
+              <div class="search-bar" style="flex:1;min-width:220px">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" id="my-reports-search" placeholder="Cari laporan..." />
+              </div>
+              <div class="filter-pills" id="my-reports-filter">
+                <button class="pill active" data-filter="all">Semua</button>
+                <button class="pill" data-filter="unread">Belum Dibaca</button>
+                <button class="pill" data-filter="process">Diproses</button>
+                <button class="pill" data-filter="done">Selesai</button>
+                <button class="pill" data-filter="rejected">Ditolak</button>
+              </div>
+            </div>
+
+            <div id="my-reports-list" class="flex flex-col gap-4">
+              <div class="skeleton" style="height:120px;border-radius:var(--r-lg)"></div>
+              <div class="skeleton" style="height:120px;border-radius:var(--r-lg)"></div>
+              <div class="skeleton" style="height:120px;border-radius:var(--r-lg)"></div>
+            </div>
+          </section>
+
+          <!-- ─ Section: Profile ─ -->
+          <section id="section-profile" class="hidden">
+            <div class="page-header">
+              <div class="page-eyebrow">Akun</div>
+              <h1 class="page-title">Profil Saya</h1>
+            </div>
+
+            <div class="grid-2" style="max-width:900px">
+              <div class="card reveal">
+                <div class="profile-avatar-wrap">
+                  <img id="profile-photo" class="profile-photo" src="" alt="" />
+                  <div class="profile-ring"></div>
+                </div>
+                <div class="profile-info">
+                  <div class="profile-name" id="profile-name"></div>
+                  <div class="profile-email" id="profile-email"></div>
+                  <div class="profile-role-badge" id="profile-role-badge"></div>
+                </div>
+              </div>
+
+              <div class="card reveal reveal-delay-1">
+                <h3 class="text-base font-ui mb-4" style="color:white;font-weight:700">Statistik Akun</h3>
+                <div class="profile-stats">
+                  <div class="profile-stat">
+                    <div class="profile-stat-val" id="ps-total">0</div>
+                    <div class="profile-stat-label">Total Laporan</div>
+                  </div>
+                  <div class="profile-stat">
+                    <div class="profile-stat-val" id="ps-done">0</div>
+                    <div class="profile-stat-label">Selesai</div>
+                  </div>
+                  <div class="profile-stat">
+                    <div class="profile-stat-val" id="ps-active">0</div>
+                    <div class="profile-stat-label">Aktif</div>
+                  </div>
+                </div>
+                <div class="divider"></div>
+                <div class="form-group">
+                  <label class="form-label">Bergabung sejak</label>
+                  <div class="text-sm text-muted" id="profile-joined">—</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ─ Section: Admin Dashboard ─ -->
+          <section id="section-admin-dash" class="hidden">
+            <div class="page-header">
+              <div class="page-eyebrow">Admin Panel</div>
+              <h1 class="page-title">Statistik Platform</h1>
+            </div>
+
+            <div class="grid-4 mb-6">
+              <div class="card stat-card reveal">
+                <div class="stat-icon" style="background:rgba(77,159,255,0.1)">👥</div>
+                <div class="stat-label">Total Mahasiswa</div>
+                <div class="stat-value" id="admin-stat-users">0</div>
+              </div>
+              <div class="card stat-card reveal reveal-delay-1">
+                <div class="stat-icon" style="background:rgba(168,85,247,0.1)">📋</div>
+                <div class="stat-label">Total Laporan</div>
+                <div class="stat-value" id="admin-stat-reports">0</div>
+              </div>
+              <div class="card stat-card reveal reveal-delay-2">
+                <div class="stat-icon" style="background:rgba(245,158,11,0.1)">⚡</div>
+                <div class="stat-label">Laporan Aktif</div>
+                <div class="stat-value" id="admin-stat-active">0</div>
+              </div>
+              <div class="card stat-card reveal reveal-delay-3">
+                <div class="stat-icon" style="background:rgba(16,217,134,0.1)">✅</div>
+                <div class="stat-label">Diselesaikan</div>
+                <div class="stat-value" id="admin-stat-done">0</div>
+              </div>
+            </div>
+
+            <!-- Charts row -->
+            <div class="grid-2">
+              <div class="card reveal">
+                <h3 class="text-base font-ui mb-4" style="color:white;font-weight:700">Laporan per Kategori</h3>
+                <div class="chart-bar-wrap" id="chart-category"></div>
+              </div>
+              <div class="card reveal reveal-delay-1">
+                <h3 class="text-base font-ui mb-4" style="color:white;font-weight:700">Laporan per Urgensi</h3>
+                <div class="chart-bar-wrap" id="chart-urgency"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ─ Section: All Reports (Admin) ─ -->
+          <section id="section-all-reports" class="hidden">
+            <div class="page-header">
+              <div class="page-eyebrow">Admin Panel</div>
+              <h1 class="page-title">Semua Laporan</h1>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex gap-4 mb-6 flex-wrap items-center">
+              <div class="search-bar" style="flex:1;min-width:220px">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" id="admin-search" placeholder="Cari laporan, nama, email..." />
+              </div>
+              <div class="filter-pills" id="admin-filter">
+                <button class="pill active" data-filter="all">Semua</button>
+                <button class="pill" data-filter="unread">Belum Dibaca</button>
+                <button class="pill" data-filter="read">Dibaca</button>
+                <button class="pill" data-filter="process">Diproses</button>
+                <button class="pill" data-filter="waiting">Menunggu</button>
+                <button class="pill" data-filter="done">Selesai</button>
+                <button class="pill" data-filter="rejected">Ditolak</button>
+              </div>
+            </div>
+
+            <div id="admin-reports-list" class="flex flex-col gap-4"></div>
+          </section>
+
+          <!-- ─ Section: Users (Admin) ─ -->
+          <section id="section-users" class="hidden">
+            <div class="page-header">
+              <div class="page-eyebrow">Admin Panel</div>
+              <h1 class="page-title">Manajemen Pengguna</h1>
+            </div>
+            <div class="card reveal">
+              <div id="users-table-wrap">
+                <div class="skeleton" style="height:200px;border-radius:var(--r-md)"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ─ Section: Gallery Mgmt (Admin) ─ -->
+          <section id="section-gallery-mgmt" class="hidden">
+            <div class="page-header">
+              <div class="page-eyebrow">Admin Panel</div>
+              <h1 class="page-title">Kelola Galeri</h1>
+            </div>
+            <div class="card reveal mb-6">
+              <h3 class="text-base font-ui mb-4" style="color:white;font-weight:700">Upload Foto Baru</h3>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+                <div>
+                  <label class="text-xs font-ui mb-1" style="display:block;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;font-weight:600">Judul Foto</label>
+                  <input type="text" id="gallery-title-input" placeholder="Contoh: Kegiatan OSPEK 2025" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:white;font-size:0.88rem;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--brand)'" onblur="this.style.borderColor='var(--border)'" />
+                </div>
+                <div>
+                  <label class="text-xs font-ui mb-1" style="display:block;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;font-weight:600">Kategori <span style="color:var(--brand)">*</span></label>
+                  <select id="gallery-category-select" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:white;font-size:0.88rem;outline:none;appearance:none;cursor:pointer;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--brand)'" onblur="this.style.borderColor='var(--border)'">
+                    <option value="" style="background:#0d1117">Pilih Kategori</option>
+                    <option value="event" style="background:#0d1117">📸 Event</option>
+                    <option value="kelas" style="background:#0d1117">📚 Kegiatan Kelas</option>
+                    <option value="organisasi" style="background:#0d1117">🏛️ Organisasi</option>
+                  </select>
+                </div>
+              </div>
+              <div class="file-upload-zone" id="gallery-upload-zone">
+                <div class="file-upload-icon">🖼️</div>
+                <div class="file-upload-text"><strong>Upload foto dokumentasi</strong><br/><span class="text-xs text-dim">JPG, PNG, WebP (max 5MB per file)</span></div>
+                <input type="file" id="gallery-files" multiple accept="image/*" style="display:none" />
+              </div>
+              <div id="gallery-upload-preview" style="margin-top:16px"></div>
+            </div>
+            <div class="card reveal">
+              <h3 class="text-base font-ui mb-4" style="color:white;font-weight:700">Foto Galeri</h3>
+              <div id="gallery-mgmt-grid" class="gallery-grid"></div>
+            </div>
+          </section>
+
+        </main>
+      </div><!-- end dashboard-layout -->
+    </div><!-- end page-container -->
+  </div><!-- end dashboard-main -->
+</div><!-- end app-shell -->
+
+<!-- ── Report Detail Modal ── -->
+<div class="modal-overlay" id="report-modal">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Detail Laporan</div>
+      <button class="modal-close" onclick="closeModal('report-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+
+<!-- ── Admin Action Modal ── -->
+<div class="modal-overlay" id="action-modal">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <div class="modal-title" id="action-modal-title">Update Status</div>
+      <button class="modal-close" onclick="closeModal('action-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group mb-4">
+        <label class="form-label">Status Baru</label>
+        <select class="form-select" id="action-status">
+          <option value="read">Dibaca</option>
+          <option value="process">Diproses</option>
+          <option value="waiting">Menunggu Tindak Lanjut</option>
+          <option value="done">Selesai</option>
+          <option value="rejected">Ditolak</option>
+        </select>
+      </div>
+      <div class="form-group mb-4">
+        <label class="form-label">Catatan untuk Mahasiswa (opsional)</label>
+        <textarea class="form-textarea" id="action-user-note" placeholder="Tulis catatan atau informasi update untuk mahasiswa..." rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Catatan Internal (opsional)</label>
+        <textarea class="form-textarea" id="action-internal-note" placeholder="Catatan internal (tidak terlihat mahasiswa)..." rows="3"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('action-modal')">Batal</button>
+      <button class="btn btn-primary" id="action-confirm-btn">Simpan Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast ── -->
+<div id="toast-container"></div>
+
+<script type="module" src="../js/dashboard.js"></script>
+</body>
+</html>

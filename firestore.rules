@@ -1,0 +1,79 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isPrivilegedEmail() {
+      return request.auth.token.email == 'kamilfauzan651@gmail.com'
+          || request.auth.token.email == 'angkatan25epunisba@gmail.com';
+    }
+
+    function isStaff() {
+      return isSignedIn() && (
+        isPrivilegedEmail()
+        || request.auth.token.get('role', '') == 'admin'
+        || request.auth.token.get('role', '') == 'dosen'
+        || request.auth.token.get('role', '') == 'founder'
+        || request.auth.token.get('role', '') == 'developer'
+      );
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    match /users/{uid} {
+      allow read:   if isOwner(uid) || isStaff();
+      allow create: if isOwner(uid);
+      allow update: if isOwner(uid) || isStaff();
+      allow delete: if isStaff();
+    }
+
+    match /reports/{reportId} {
+      allow read:   if isSignedIn() && (resource.data.uid == request.auth.uid || isStaff());
+      allow create: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+      allow update: if isSignedIn() && (isStaff() || (resource.data.uid == request.auth.uid && request.resource.data.uid == resource.data.uid));
+      allow delete: if isStaff();
+    }
+
+    match /notifications/{notifId} {
+      allow read:   if isSignedIn() && (resource.data.uid == request.auth.uid || isStaff());
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && (resource.data.uid == request.auth.uid || isStaff());
+      allow delete: if isStaff();
+    }
+
+    match /gallery/{itemId} {
+      allow read:  if true;
+      allow write: if isStaff();
+    }
+
+    // Dokumen agregat publik (statistik beranda) — boleh ditulis siapa pun yang
+    // sudah login, supaya angka di beranda selalu update real-time tanpa harus
+    // menunggu admin login. Dokumen settings lain tetap staff-only.
+    match /settings/public_stats {
+      allow read:  if true;
+      allow write: if isSignedIn();
+    }
+
+    match /settings/{settingId} {
+      allow read:  if true;
+      allow write: if isStaff();
+    }
+
+    match /activity_logs/{logId} {
+      allow read:           if isStaff();
+      allow create:         if isSignedIn();
+      allow update, delete: if isStaff();
+    }
+
+    match /contact_messages/{msgId} {
+      allow create:               if true;
+      allow read, update, delete: if isStaff();
+    }
+  }
+}

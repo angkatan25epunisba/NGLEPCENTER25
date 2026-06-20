@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EP Care Center — Suara Mahasiswa EP UNISBA</title>
+  <meta name="description" content="Platform aspirasi, konsultasi, dan keluhan mahasiswa Program Studi Ekonomi Pembangunan FEB UNISBA" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/home.css" />
+</head>
+<body>
+
+<!-- ── Custom Cursor ── -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- ── Page Transition ── -->
+<div class="page-transition-overlay"></div>
+
+<!-- ── Loading Screen ── -->
+<div id="loading-screen">
+  <div class="loader-logo">EP Care Center</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-text">Memuat Sistem &bull; Ekonomi Pembangunan UNISBA</div>
+</div>
+
+<!-- ── Aurora + Particles ── -->
+<div class="aurora-bg">
+  <div class="aurora-orb"></div>
+  <div class="aurora-orb"></div>
+  <div class="aurora-orb"></div>
+</div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- ── Navigation ── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">EP<span>Care</span>Center</a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Beranda</a></li>
+      <li><a href="pages/about.html">Tentang</a></li>
+      <li><a href="pages/gallery.html">Galeri</a></li>
+      <li><a href="pages/team.html">Tim</a></li>
+      <li><a href="pages/contact.html">Kontak</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="pages/dashboard.html" class="btn btn-primary btn-sm" id="nav-dashboard-btn" style="display:none">Dashboard</a>
+      <button class="btn btn-ghost btn-sm" id="nav-login-btn">Masuk dengan Google</button>
+      <div id="nav-user-area" style="display:none" class="flex items-center gap-3">
+        <button class="notif-bell" id="nav-notif-btn" title="Notifikasi">🔔<span class="notif-count hidden" id="nav-notif-count">0</span></button>
+        <div class="nav-user-btn" id="nav-user-info">
+          <img class="nav-user-avatar" id="nav-avatar" src="" alt="Avatar" />
+          <span id="nav-username">Pengguna</span>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="nav-logout-btn">Keluar</button>
+      </div>
+    </div>
+
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Beranda</a>
+  <a href="pages/about.html">Tentang</a>
+  <a href="pages/gallery.html">Galeri</a>
+  <a href="pages/team.html">Tim</a>
+  <a href="pages/contact.html">Kontak</a>
+  <a href="pages/dashboard.html" id="mobile-dashboard-link" style="color:var(--neon-cyan)">Dashboard</a>
+</div>
+
+<!-- ── App Shell ── -->
+<div class="app-shell">
+
+  <!-- ═══════════════════════════════════════════════ HERO ══ -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge reveal">
+        Platform Aspirasi Mahasiswa &bull; EP FEB UNISBA
+      </div>
+
+      <h1 class="hero-title reveal reveal-delay-1">
+        Suaramu<br />
+        <span class="gradient-text">Didengar.</span><br />
+        Masalahmu Terselesaikan.
+      </h1>
+
+      <p class="hero-subtitle reveal reveal-delay-2">
+        EP Care Center adalah jembatan komunikasi antara mahasiswa Program Studi Ekonomi Pembangunan
+        dengan Ketua Kelas, Dosen Wali, dan pihak fakultas — transparan, real-time, dan terstruktur.
+      </p>
+
+      <div class="hero-actions reveal reveal-delay-3">
+        <button class="btn btn-primary btn-lg" id="hero-login-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Masuk & Buat Laporan
+        </button>
+        <a href="pages/about.html" class="btn btn-ghost btn-lg">Pelajari Lebih Lanjut →</a>
+      </div>
+
+      <!-- Stat Strip (data real dari Firestore) -->
+      <div class="hero-stats reveal reveal-delay-4">
+        <div class="hero-stat">
+          <div class="hero-stat-val" id="home-stat-total">—</div>
+          <div class="hero-stat-label">Laporan Masuk</div>
+        </div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-val" id="home-stat-done">—</div>
+          <div class="hero-stat-label">Sudah Selesai</div>
+        </div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-val" id="home-stat-mahasiswa">—</div>
+          <div class="hero-stat-label">Mahasiswa Aktif</div>
+        </div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-val" id="home-stat-rate">—</div>
+          <div class="hero-stat-label">% Tingkat Respons</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Visual (Glassmorphism Card) -->
+    <div class="hero-visual reveal reveal-delay-2">
+      <div class="hero-card card card-glow">
+        <div class="hero-card-header">
+          <div class="flex items-center gap-3">
+            <div class="hero-card-dot" style="background:var(--neon-green)"></div>
+            <div class="hero-card-dot" style="background:var(--neon-amber)"></div>
+            <div class="hero-card-dot" style="background:var(--neon-red)"></div>
+          </div>
+          <div class="font-mono text-xs text-muted">ep-care-center.app</div>
+        </div>
+
+        <div class="hero-card-report">
+          <div class="flex items-center justify-between mb-3">
+            <span class="badge badge-process">Diproses</span>
+            <span class="font-mono text-xs text-dim">RPT-2024-089</span>
+          </div>
+          <div class="text-sm font-ui" style="color:white;font-weight:600;margin-bottom:8px">
+            Jadwal UTS Bentrok dengan Kegiatan Kemahasiswaan
+          </div>
+          <div class="text-xs text-muted" style="line-height:1.6;margin-bottom:16px">
+            Laporan diterima dan sedang dikoordinasikan bersama dosen koordinator mata kuliah...
+          </div>
+
+          <!-- Mini Timeline -->
+          <div class="mini-timeline">
+            <div class="mini-tl-item done"><span class="mini-tl-dot"></span><span class="mini-tl-text">Laporan Dibuat</span></div>
+            <div class="mini-tl-item done"><span class="mini-tl-dot"></span><span class="mini-tl-text">Dibaca Ketua Kelas</span></div>
+            <div class="mini-tl-item active"><span class="mini-tl-dot"></span><span class="mini-tl-text">Diteruskan ke Dosen</span></div>
+            <div class="mini-tl-item pending"><span class="mini-tl-dot"></span><span class="mini-tl-text">Menunggu Respons</span></div>
+            <div class="mini-tl-item pending"><span class="mini-tl-dot"></span><span class="mini-tl-text">Selesai</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating decorations -->
+      <div class="hero-float hero-float-1">📬</div>
+      <div class="hero-float hero-float-2">✅</div>
+      <div class="hero-float hero-float-3">🎓</div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ HOW IT WORKS ══ -->
+  <section class="section-how">
+    <div class="page-container">
+      <div class="section-header text-center reveal">
+        <div class="page-eyebrow">Cara Kerja</div>
+        <h2 class="section-title">Sederhana, Cepat, Transparan</h2>
+        <p class="page-subtitle" style="margin:var(--s4) auto 0">
+          Dari laporan hingga penyelesaian, setiap langkah terpantau real-time.
+        </p>
+      </div>
+
+      <div class="how-steps">
+        <div class="how-step card reveal reveal-delay-1">
+          <div class="how-step-num">01</div>
+          <div class="how-step-icon">📝</div>
+          <h3 class="how-step-title">Buat Laporan</h3>
+          <p class="how-step-desc">Pilih kategori, tulis keluhan atau aspirasimu, lampirkan file jika perlu, dan tentukan tingkat urgensi.</p>
+        </div>
+        <div class="how-step-arrow">→</div>
+        <div class="how-step card reveal reveal-delay-2">
+          <div class="how-step-num">02</div>
+          <div class="how-step-icon">👀</div>
+          <h3 class="how-step-title">Dibaca & Diproses</h3>
+          <p class="how-step-desc">Ketua Kelas menerima notifikasi, membaca laporan, dan meneruskannya ke pihak yang berwenang.</p>
+        </div>
+        <div class="how-step-arrow">→</div>
+        <div class="how-step card reveal reveal-delay-3">
+          <div class="how-step-num">03</div>
+          <div class="how-step-icon">📡</div>
+          <h3 class="how-step-title">Pantau Real-Time</h3>
+          <p class="how-step-desc">Tracking progress laporanmu seperti sistem tiket profesional — dari pengajuan hingga selesai.</p>
+        </div>
+        <div class="how-step-arrow">→</div>
+        <div class="how-step card reveal reveal-delay-4">
+          <div class="how-step-num">04</div>
+          <div class="how-step-icon">✅</div>
+          <h3 class="how-step-title">Terselesaikan</h3>
+          <p class="how-step-desc">Kamu mendapat notifikasi ketika laporan diselesaikan, beserta catatan respon dari pihak terkait.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ CATEGORIES ══ -->
+  <section class="section-categories">
+    <div class="page-container">
+      <div class="section-header text-center reveal">
+        <div class="page-eyebrow">Kategori Laporan</div>
+        <h2 class="section-title">Apa yang Bisa Kamu Laporkan?</h2>
+      </div>
+
+      <div class="grid-4">
+        <div class="cat-card card reveal reveal-delay-1" data-color="#4d9fff">
+          <span class="cat-icon">📚</span>
+          <span class="cat-label">Kendala Akademik</span>
+        </div>
+        <div class="cat-card card reveal reveal-delay-1" data-color="#a855f7">
+          <span class="cat-icon">👨‍🏫</span>
+          <span class="cat-label">Kendala Dosen</span>
+        </div>
+        <div class="cat-card card reveal reveal-delay-2" data-color="#ec4899">
+          <span class="cat-icon">💬</span>
+          <span class="cat-label">Curhat Perkuliahan</span>
+        </div>
+        <div class="cat-card card reveal reveal-delay-2" data-color="#10d986">
+          <span class="cat-icon">🤝</span>
+          <span class="cat-label">Konsultasi</span>
+        </div>
+        <div class="cat-card card reveal reveal-delay-3" data-color="#f59e0b">
+          <span class="cat-icon">💡</span>
+          <span class="cat-label">Saran</span>
+        </div>
+        <div class="cat-card card reveal reveal-delay-3" data-color="#ef4444">
+          <span class="cat-icon">😔</span>
+          <span class="cat-label">Keluhan</span>
+        </div>
+        <div class="cat-card card reveal reveal-delay-4" data-color="#00d4ff">
+          <span class="cat-icon">🚀</span>
+          <span class="cat-label">Aspirasi</span>
+        </div>
+        <div class="cat-card card reveal reveal-delay-4" data-color="#6b7280">
+          <span class="cat-icon">📌</span>
+          <span class="cat-label">Lainnya</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ CTA ══ -->
+  <section class="section-cta">
+    <div class="page-container">
+      <div class="cta-card rgb-border card reveal">
+        <div class="cta-inner">
+          <div>
+            <div class="page-eyebrow">Siap Memulai?</div>
+            <h2 class="cta-title">Suaramu Penting Bagi Kami</h2>
+            <p class="cta-desc">
+              Bergabung dengan mahasiswa EP UNISBA yang sudah menggunakan EP Care Center
+              untuk menyampaikan aspirasi dan menyelesaikan kendala perkuliahan.
+            </p>
+          </div>
+          <div class="cta-action">
+            <button class="btn btn-primary btn-lg" id="cta-login-btn">
+              Mulai Sekarang — Gratis
+            </button>
+            <span class="text-xs text-muted">Login dengan akun Google kampusmu</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ FOOTER ══ -->
+  <footer class="footer">
+    <div class="page-container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="nav-logo" style="font-size:1.5rem">EP<span>Care</span>Center</div>
+          <p class="footer-desc">
+            Platform komunikasi resmi mahasiswa Program Studi Ekonomi Pembangunan,
+            Fakultas Ekonomi dan Bisnis, Universitas Islam Bandung.
+          </p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-link-group">
+            <div class="footer-link-title">Platform</div>
+            <a href="pages/dashboard.html">Dashboard</a>
+            <a href="pages/about.html">Tentang</a>
+            <a href="pages/gallery.html">Galeri</a>
+          </div>
+          <div class="footer-link-group">
+            <div class="footer-link-title">Komunitas</div>
+            <a href="pages/team.html">Tim Kami</a>
+            <a href="pages/contact.html">Kontak</a>
+          </div>
+        </div>
+      </div>
+      <div class="neon-line"></div>
+      <div class="footer-bottom">
+        <span class="text-xs text-dim">© 2025 EP Care Center · Ekonomi Pembangunan FEB UNISBA</span>
+        <span class="text-xs text-dim">Made with 💙 untuk mahasiswa EP</span>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- end app-shell -->
+
+<!-- ── Toast Container ── -->
+<div id="toast-container"></div>
+
+<!-- ── Notification Dropdown (hidden) ── -->
+<div id="notif-dropdown" class="notif-dropdown hidden"></div>
+
+<!-- ── Scripts ── -->
+<script type="module">
+  import { initCursor, initParticles, initToasts, initScrollReveal, initNavScroll, initMobileNav, initLoader, animateNumber, setActiveNavLink } from './js/ui.js';
+  import { auth, onAuthStateChanged, signInWithGoogle, signOutUser, getCurrentUserData, hasAdminAccess } from './js/firebase.js';
+
+  // Init core UI
+  initCursor();
+  initParticles();
+  initToasts();
+  initScrollReveal();
+  initNavScroll();
+  initMobileNav();
+  initLoader();
+  setActiveNavLink();
+
+  // Animate hero stats when in view
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('[data-count]').forEach(el => {
+          animateNumber(el, parseInt(el.dataset.count));
+        });
+        observer.unobserve(e.target);
+      }
+    });
+  });
+  const stats = document.querySelector('.hero-stats');
+  if (stats) observer.observe(stats);
+
+  // Auth state
+  onAuthStateChanged(auth, async user => {
+    const loginBtn   = document.getElementById('nav-login-btn');
+    const userArea   = document.getElementById('nav-user-area');
+    const dashBtn    = document.getElementById('nav-dashboard-btn');
+    const heroBtns   = document.querySelectorAll('#hero-login-btn, #cta-login-btn');
+
+    if (user) {
+      const data = await getCurrentUserData();
+      if (loginBtn)   loginBtn.style.display    = 'none';
+      if (userArea)   userArea.style.display     = 'flex';
+      if (dashBtn)    dashBtn.style.display      = '';
+      document.getElementById('nav-avatar').src     = user.photoURL || '';
+      document.getElementById('nav-username').textContent = user.displayName?.split(' ')[0] || 'Pengguna';
+
+      heroBtns.forEach(b => {
+        b.textContent = 'Buka Dashboard';
+        b.onclick = () => window.location.href = 'pages/dashboard.html';
+      });
+    } else {
+      if (loginBtn) loginBtn.style.display = '';
+      if (userArea) userArea.style.display = 'none';
+      if (dashBtn)  dashBtn.style.display  = 'none';
+
+      heroBtns.forEach(b => {
+        b.onclick = handleLogin;
+      });
+    }
+  });
+
+  async function handleLogin() {
+    const result = await signInWithGoogle();
+    if (result.success) {
+      showToast({ type:'success', title:'Berhasil Masuk', message:`Selamat datang, ${result.user.displayName}!` });
+      setTimeout(() => window.location.href = 'pages/dashboard.html', 800);
+    } else {
+      showToast({ type:'error', title:'Gagal Masuk', message: result.error });
+    }
+  }
+
+  // Import showToast separately (it's used in event handlers)
+  import { showToast } from './js/ui.js';
+
+  document.getElementById('nav-login-btn')?.addEventListener('click', handleLogin);
+  document.getElementById('nav-logout-btn')?.addEventListener('click', async () => {
+    await signOutUser();
+    showToast({ type:'info', title:'Sampai Jumpa!', message:'Kamu berhasil keluar.' });
+    setTimeout(() => window.location.reload(), 600);
+  });
+
+  // Category card hover
+  document.querySelectorAll('.cat-card').forEach(c => {
+    const color = c.dataset.color;
+    c.addEventListener('mouseenter', () => {
+      c.style.borderColor = color;
+      c.style.boxShadow   = `0 0 24px ${color}33`;
+    });
+    c.addEventListener('mouseleave', () => {
+      c.style.borderColor = '';
+      c.style.boxShadow   = '';
+    });
+  });
+</script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, getDoc, query, where }
+      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const app = initializeApp({
+      apiKey: "AIzaSyDYfQTi-nqqhZ8wVkaho6O8vteA_V--7lg",
+      authDomain: "nglepcenter25.firebaseapp.com",
+      projectId: "nglepcenter25"
+    });
+    const db = getFirestore(app);
+
+    function animNum(el, val) {
+      if (!el || val === undefined || val === null) return;
+      let start = 0; const dur = 1200;
+      const step = ts => {
+        if (!start) start = ts;
+        const pct = Math.min((ts - start) / dur, 1);
+        el.textContent = Math.round(pct * val);
+        if (pct < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    async function loadHomeStats() {
+      try {
+        // Try sessionStorage first (fast, set by logged-in user from dashboard)
+        const cached = sessionStorage.getItem('epcc_stats');
+        if (cached) {
+          const { total, done, mahasiswa, responseRate, ts } = JSON.parse(cached);
+          if (Date.now() - ts < 5 * 60 * 1000) {
+            animNum(document.getElementById('home-stat-total'),     total);
+            animNum(document.getElementById('home-stat-done'),      done);
+            animNum(document.getElementById('home-stat-mahasiswa'), mahasiswa);
+            document.getElementById('home-stat-rate').textContent = responseRate + '%';
+            return;
+          }
+        }
+      } catch(e) {}
+
+      try {
+        // Try the public stats document first (fast single-doc read, no auth required)
+        const statsDoc = await getDoc(doc(db, 'settings', 'public_stats'));
+        if (statsDoc.exists()) {
+          const { total, done, mahasiswa } = statsDoc.data();
+          const rate = (total || 0) > 0 ? Math.round(((done || 0) / total) * 100) : 0;
+          animNum(document.getElementById('home-stat-total'),     total     || 0);
+          animNum(document.getElementById('home-stat-done'),      done      || 0);
+          animNum(document.getElementById('home-stat-mahasiswa'), mahasiswa || 0);
+          document.getElementById('home-stat-rate').textContent = rate + '%';
+          return;
+        }
+      } catch(e) { console.warn('public_stats read failed:', e.message); }
+
+      // Last resort: direct Firestore read (requires signed-in user)
+      try {
+        const [usersSnap, reportsSnap] = await Promise.all([
+          getDocs(collection(db, 'users')),
+          getDocs(collection(db, 'reports'))
+        ]);
+        const users   = usersSnap.docs.map(d => d.data());
+        const reports = reportsSnap.docs.map(d => d.data());
+
+        const mahasiswa = users.filter(u => u.role === 'mahasiswa').length;
+        const total     = reports.length;
+        const done      = reports.filter(r => r.status === 'done').length;
+        const rate      = total > 0 ? Math.round((done / total) * 100) : 0;
+
+        animNum(document.getElementById('home-stat-total'),     total);
+        animNum(document.getElementById('home-stat-done'),      done);
+        animNum(document.getElementById('home-stat-mahasiswa'), mahasiswa);
+        document.getElementById('home-stat-rate').textContent = rate + '%';
+      } catch(e) {
+        // Data tidak tersedia untuk tamu — tampilkan placeholder
+        ['home-stat-total','home-stat-done','home-stat-mahasiswa'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = '—';
+        });
+        const rateEl = document.getElementById('home-stat-rate');
+        if (rateEl) rateEl.textContent = '—%';
+      }
+    }
+    loadHomeStats();
+  </script>
+</body>
+</html>

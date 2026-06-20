@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tim — EP Care Center</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <style>
+    .team-hero { padding: var(--s20) 0 var(--s12); text-align: center; }
+    .team-section { padding: var(--s8) 0 var(--s20); }
+    .team-group-title { font-family: var(--font-mono); font-size: 0.7rem; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.16em; text-align: center; margin-bottom: var(--s8); }
+    .team-card-outer { transition: all var(--t-base); }
+    .team-card-outer:hover { transform: translateY(-8px); }
+    .team-socials { display: flex; justify-content: center; gap: var(--s3); margin-top: var(--s4); }
+    .team-social { width: 32px; height: 32px; border-radius: var(--r-md); background: var(--glass-light); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); font-size: 0.85rem; text-decoration: none; transition: all var(--t-fast); }
+    .team-social:hover { background: var(--brand-dim); border-color: var(--brand); color: var(--brand); }
+  </style>
+</head>
+<body>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div class="page-transition-overlay"></div>
+<div id="loading-screen"><div class="loader-logo">EP Care Center</div><div class="loader-bar"><div class="loader-fill"></div></div><div class="loader-text">Memuat Halaman</div></div>
+<div class="aurora-bg"><div class="aurora-orb"></div><div class="aurora-orb"></div><div class="aurora-orb"></div></div>
+<canvas id="particles-canvas"></canvas>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">EP<span>Care</span>Center</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Beranda</a></li>
+      <li><a href="about.html">Tentang</a></li>
+      <li><a href="gallery.html">Galeri</a></li>
+      <li><a href="team.html" class="active">Tim</a></li>
+      <li><a href="contact.html">Kontak</a></li>
+    </ul>
+    <div class="nav-actions"><a href="dashboard.html" class="btn btn-primary btn-sm">Dashboard</a></div>
+    <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="../index.html">Beranda</a><a href="about.html">Tentang</a>
+  <a href="gallery.html">Galeri</a><a href="team.html" class="active">Tim</a><a href="contact.html">Kontak</a>
+</div>
+
+<div class="app-shell">
+  <div class="page-container">
+    <div class="team-hero">
+      <div class="page-eyebrow reveal">Tim Kami</div>
+      <h1 class="page-title reveal reveal-delay-1" style="font-size:clamp(2.5rem,5vw,4rem)">
+        Orang-Orang di Balik<br /><span class="gradient-text">EP Care Center</span>
+      </h1>
+      <p class="page-subtitle reveal reveal-delay-2" style="margin:var(--s4) auto 0;text-align:center">
+        Tim yang berdedikasi untuk menghubungkan mahasiswa dengan solusi yang mereka butuhkan.
+      </p>
+    </div>
+
+    <div class="team-section">
+
+      <!-- Founder & Developer -->
+      <div class="team-group-title reveal">⚡ Founder &amp; Developer</div>
+      <div class="grid-2 mb-8 reveal reveal-delay-1" style="max-width:700px;margin:0 auto var(--s12)">
+        <div class="team-card-outer">
+          <div class="card team-card rgb-border" style="background:var(--glass)">
+            <div class="team-avatar" style="width:90px;height:90px;font-size:2.2rem;border-color:var(--neon-cyan)">🧑‍💻</div>
+            <div class="team-role" style="color:var(--neon-cyan)">Developer &amp; Co-Founder</div>
+            <div class="team-name">Kamil Fauzan</div>
+            <div class="team-desc">Bertanggung jawab atas pengembangan teknis, infrastruktur, dan arsitektur platform EP Care Center.</div>
+            <div class="team-socials">
+              <a href="mailto:kamilfauzan651@gmail.com" class="team-social" title="Email">📧</a>
+              <a href="#" class="team-social" title="GitHub">💻</a>
+            </div>
+          </div>
+        </div>
+        <div class="team-card-outer">
+          <div class="card team-card" style="background:var(--glass)">
+            <div class="team-avatar" style="width:90px;height:90px;font-size:2.2rem;border-color:var(--neon-purple)">👑</div>
+            <div class="team-role" style="color:var(--neon-purple)">Founder &amp; Owner</div>
+            <div class="team-name">Angkatan 25 EP</div>
+            <div class="team-desc">Inisiator dan pemilik platform. Mewakili suara seluruh mahasiswa Angkatan 2025 EP UNISBA.</div>
+            <div class="team-socials">
+              <a href="mailto:angkatan25epunisba@gmail.com" class="team-social" title="Email">📧</a>
+              <a href="#" class="team-social" title="Instagram">📸</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Team -->
+      <div class="neon-line"></div>
+      <div class="team-group-title reveal" style="margin-top:var(--s10)">🛡️ Tim Admin &amp; Moderator</div>
+      <div class="grid-3 reveal reveal-delay-1">
+        <!-- Admin placeholders - to be updated -->
+        <div class="team-card-outer">
+          <div class="card team-card">
+            <div class="team-avatar" style="font-size:2rem">🎓</div>
+            <div class="team-role">Admin</div>
+            <div class="team-name">Ketua Kelas</div>
+            <div class="team-desc">Koordinator utama yang menerima, memproses, dan meneruskan laporan mahasiswa kepada pihak berwenang.</div>
+          </div>
+        </div>
+        <div class="team-card-outer">
+          <div class="card team-card">
+            <div class="team-avatar" style="font-size:2rem">📋</div>
+            <div class="team-role">Admin</div>
+            <div class="team-name">Wakil Ketua Kelas</div>
+            <div class="team-desc">Membantu koordinasi dan penanganan laporan serta komunikasi dengan dosen wali dan fakultas.</div>
+          </div>
+        </div>
+        <div class="team-card-outer">
+          <div class="card team-card">
+            <div class="team-avatar" style="font-size:2rem">🤝</div>
+            <div class="team-role">Moderator</div>
+            <div class="team-name">Tim Humas EP 25</div>
+            <div class="team-desc">Mengelola komunikasi, dokumentasi kegiatan, dan galeri platform EP Care Center.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Values -->
+      <div style="margin-top:var(--s16)">
+        <div class="neon-line"></div>
+        <div class="section-header text-center reveal" style="margin:var(--s10) 0 var(--s8)">
+          <h2 class="section-title">Nilai yang Kami Pegang</h2>
+        </div>
+        <div class="grid-4">
+          <div class="card text-center reveal"><div style="font-size:2rem;margin-bottom:var(--s3)">🔍</div><div class="text-base font-ui" style="color:white;font-weight:700;margin-bottom:var(--s2)">Transparansi</div><div class="text-sm text-muted">Setiap proses terbuka dan terdokumentasi dengan jelas</div></div>
+          <div class="card text-center reveal reveal-delay-1"><div style="font-size:2rem;margin-bottom:var(--s3)">⚡</div><div class="text-base font-ui" style="color:white;font-weight:700;margin-bottom:var(--s2)">Responsif</div><div class="text-sm text-muted">Setiap laporan direspons dengan cepat dan profesional</div></div>
+          <div class="card text-center reveal reveal-delay-2"><div style="font-size:2rem;margin-bottom:var(--s3)">🛡️</div><div class="text-base font-ui" style="color:white;font-weight:700;margin-bottom:var(--s2)">Keamanan</div><div class="text-sm text-muted">Data mahasiswa dijaga kerahasiaannya dengan ketat</div></div>
+          <div class="card text-center reveal reveal-delay-3"><div style="font-size:2rem;margin-bottom:var(--s3)">🤝</div><div class="text-base font-ui" style="color:white;font-weight:700;margin-bottom:var(--s2)">Inklusif</div><div class="text-sm text-muted">Terbuka untuk semua mahasiswa tanpa terkecuali</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="page-container">
+    <div class="footer-bottom" style="padding:var(--s6) 0">
+      <span class="text-xs text-dim">© 2025 EP Care Center · Ekonomi Pembangunan FEB UNISBA</span>
+      <a href="../index.html" class="text-xs" style="color:var(--brand);text-decoration:none">← Kembali ke Beranda</a>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+<script type="module">
+  import { initCursor, initParticles, initToasts, initScrollReveal, initNavScroll, initMobileNav, initLoader } from '../js/ui.js';
+  initCursor(); initParticles(); initToasts(); initScrollReveal(); initNavScroll(); initMobileNav(); initLoader();
+</script>
+</body>
+</html>

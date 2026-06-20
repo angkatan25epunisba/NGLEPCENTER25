@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galeri — EP Care Center</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <style>
+    .gallery-hero { padding: var(--s20) 0 var(--s12); text-align: center; }
+    .gallery-section { padding: var(--s8) 0 var(--s20); }
+    .gallery-filters { display: flex; justify-content: center; gap: var(--s3); flex-wrap: wrap; margin-bottom: var(--s10); }
+    .gallery-filter-btn {
+      padding: var(--s2) var(--s5);
+      background: var(--glass-light);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-full);
+      color: rgba(255,255,255,0.6);
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--t-fast);
+    }
+    .gallery-filter-btn:hover { background: var(--glass-mid); color: rgba(255,255,255,0.9); }
+    .gallery-filter-btn.active {
+      background: var(--brand-dim); border-color: var(--brand); color: var(--brand);
+      box-shadow: 0 0 14px rgba(77,159,255,0.2);
+    }
+    .gallery-item-overlay { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .gallery-item-title { font-family: var(--font-ui); font-size: 0.85rem; font-weight: 700; color: white; }
+    .gallery-item-meta { font-family: var(--font-mono); font-size: 0.65rem; color: rgba(255,255,255,0.6); }
+    .gallery-empty { text-align: center; padding: var(--s20) 0; color: rgba(255,255,255,0.35); }
+    .gallery-empty-icon { font-size: 2.5rem; margin-bottom: var(--s4); opacity: 0.5; }
+    .lightbox { position: fixed; inset: 0; background: rgba(3,5,8,0.92); backdrop-filter: blur(12px); z-index: 999; display: none; align-items: center; justify-content: center; padding: var(--s8); }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 80vh; border-radius: var(--r-lg); box-shadow: var(--shadow-lg); }
+    .lightbox-caption { position: absolute; bottom: var(--s10); left: 0; right: 0; text-align: center; color: rgba(255,255,255,0.8); font-family: var(--font-ui); font-size: 0.95rem; }
+    .lightbox-close { position: absolute; top: var(--s6); right: var(--s6); width: 44px; height: 44px; border-radius: 50%; background: var(--glass); border: 1px solid var(--border); color: white; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all var(--t-fast); }
+    .lightbox-close:hover { background: var(--brand-dim); border-color: var(--brand); color: var(--brand); }
+    .skeleton-item { background: var(--glass-light); border-radius: var(--r-lg); animation: pulseSkeleton 1.6s ease infinite; }
+    @keyframes pulseSkeleton { 0%,100% { opacity: 0.5; } 50% { opacity: 0.9; } }
+  </style>
+</head>
+<body>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div class="page-transition-overlay"></div>
+<div id="loading-screen"><div class="loader-logo">EP Care Center</div><div class="loader-bar"><div class="loader-fill"></div></div><div class="loader-text">Memuat Galeri</div></div>
+<div class="aurora-bg"><div class="aurora-orb"></div><div class="aurora-orb"></div><div class="aurora-orb"></div></div>
+<canvas id="particles-canvas"></canvas>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">EP<span>Care</span>Center</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Beranda</a></li>
+      <li><a href="about.html">Tentang</a></li>
+      <li><a href="gallery.html" class="active">Galeri</a></li>
+      <li><a href="team.html">Tim</a></li>
+      <li><a href="contact.html">Kontak</a></li>
+    </ul>
+    <div class="nav-actions"><a href="dashboard.html" class="btn btn-primary btn-sm">Dashboard</a></div>
+    <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="../index.html">Beranda</a><a href="about.html">Tentang</a>
+  <a href="gallery.html" class="active">Galeri</a><a href="team.html">Tim</a><a href="contact.html">Kontak</a>
+</div>
+
+<div class="app-shell">
+  <div class="page-container">
+    <div class="gallery-hero">
+      <div class="page-eyebrow reveal">Dokumentasi</div>
+      <h1 class="page-title reveal reveal-delay-1" style="font-size:clamp(2.5rem,5vw,4rem)">
+        Momen &amp; Kegiatan<br /><span class="gradient-text">Mahasiswa EP</span>
+      </h1>
+      <p class="page-subtitle reveal reveal-delay-2" style="margin:var(--s4) auto 0;text-align:center">
+        Dokumentasi kegiatan, event, dan keseharian kelas Ekonomi Pembangunan UNISBA.
+      </p>
+    </div>
+
+    <div class="gallery-section">
+      <div class="gallery-filters reveal" id="gallery-filters">
+        <button class="gallery-filter-btn active" data-filter="all">Semua</button>
+        <button class="gallery-filter-btn" data-filter="event">Event</button>
+        <button class="gallery-filter-btn" data-filter="kelas">Kegiatan Kelas</button>
+        <button class="gallery-filter-btn" data-filter="organisasi">Organisasi</button>
+      </div>
+
+      <div class="gallery-grid reveal reveal-delay-1" id="gallery-grid">
+        <!-- Skeleton loaders shown while Firestore loads -->
+        <div class="gallery-item skeleton-item" style="height:240px"></div>
+        <div class="gallery-item skeleton-item" style="height:180px"></div>
+        <div class="gallery-item skeleton-item" style="height:300px"></div>
+        <div class="gallery-item skeleton-item" style="height:200px"></div>
+        <div class="gallery-item skeleton-item" style="height:260px"></div>
+        <div class="gallery-item skeleton-item" style="height:220px"></div>
+      </div>
+
+      <div class="gallery-empty hidden" id="gallery-empty">
+        <div class="gallery-empty-icon">🖼️</div>
+        <div class="text-base" style="color:rgba(255,255,255,0.5)">Belum ada dokumentasi untuk kategori ini.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightbox-close">✕</button>
+  <img id="lightbox-img" src="" alt="" />
+  <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
+
+<footer class="footer">
+  <div class="page-container">
+    <div class="footer-bottom" style="padding:var(--s6) 0">
+      <span class="text-xs text-dim">© 2025 EP Care Center · Ekonomi Pembangunan FEB UNISBA</span>
+      <a href="../index.html" class="text-xs" style="color:var(--brand);text-decoration:none">← Kembali ke Beranda</a>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+<script type="module">
+  import { initCursor, initParticles, initToasts, initScrollReveal, initNavScroll, initMobileNav, initLoader, setActiveNavLink, showToast } from '../js/ui.js';
+  import { db, collection, query, orderBy, limit, getDocs } from '../js/firebase.js';
+
+  initCursor(); initParticles(); initToasts(); initScrollReveal();
+  initNavScroll(); initMobileNav(); initLoader(); setActiveNavLink();
+
+  const grid    = document.getElementById('gallery-grid');
+  const empty   = document.getElementById('gallery-empty');
+  const filters = document.getElementById('gallery-filters');
+  const lightbox = document.getElementById('lightbox');
+  const lbImg     = document.getElementById('lightbox-img');
+  const lbCaption = document.getElementById('lightbox-caption');
+
+  let allItems = [];
+  let activeFilter = 'all';
+
+  function renderGrid() {
+    const items = activeFilter === 'all' ? allItems : allItems.filter(i => i.category === activeFilter);
+    grid.innerHTML = '';
+
+    if (items.length === 0) {
+      empty.classList.remove('hidden');
+      grid.classList.add('hidden');
+      return;
+    }
+    empty.classList.add('hidden');
+    grid.classList.remove('hidden');
+
+    items.forEach((item, idx) => {
+      const el = document.createElement('div');
+      el.className = 'gallery-item reveal in-view';
+      el.style.transitionDelay = `${(idx % 6) * 60}ms`;
+      el.innerHTML = `
+        <img src="${item.imageUrl}" alt="${item.title ?? 'Dokumentasi EP Care Center'}" loading="lazy" />
+        <div class="gallery-item-overlay">
+          <div class="gallery-item-title">${item.title ?? 'Dokumentasi Kegiatan'}</div>
+          ${item.date ? `<div class="gallery-item-meta">${item.date}</div>` : ''}
+        </div>
+      `;
+      el.addEventListener('click', () => openLightbox(item));
+      grid.appendChild(el);
+    });
+  }
+
+  function openLightbox(item) {
+    lbImg.src = item.imageUrl;
+    lbImg.alt = item.title ?? '';
+    lbCaption.textContent = item.title ?? '';
+    lightbox.classList.add('open');
+  }
+  document.getElementById('lightbox-close').addEventListener('click', () => lightbox.classList.remove('open'));
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+
+  filters.querySelectorAll('.gallery-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      filters.querySelectorAll('.gallery-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      renderGrid();
+    });
+  });
+
+  // ── Load gallery items from Firestore ──
+  async function loadGallery() {
+    try {
+      const q = query(collection(db, 'gallery'), orderBy('createdAt', 'desc'), limit(60));
+      const snap = await getDocs(q);
+      allItems = snap.docs.map(d => { const data = d.data(); return { id: d.id, ...data, imageUrl: data.url || data.imageUrl || '' }; });
+      renderGrid();
+    } catch (err) {
+      console.error('Gagal memuat galeri:', err);
+      grid.innerHTML = '';
+      empty.classList.remove('hidden');
+      empty.querySelector('div.text-base').textContent = 'Galeri belum tersedia. Silakan coba lagi nanti.';
+    }
+  }
+  loadGallery();
+</script>
+</body>
+</html>

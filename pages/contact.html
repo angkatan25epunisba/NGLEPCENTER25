@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kontak — EP Care Center</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <style>
+    .contact-hero { padding: var(--s20) 0 var(--s12); text-align: center; }
+    .contact-section { padding: var(--s8) 0 var(--s20); }
+    .contact-layout { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: var(--s8); align-items: start; }
+    .contact-channel {
+      display: flex; align-items: center; gap: var(--s4);
+      padding: var(--s5); text-decoration: none;
+      transition: all var(--t-base); margin-bottom: var(--s4);
+    }
+    .contact-channel:hover { transform: translateX(4px); border-color: var(--brand); box-shadow: 0 0 24px rgba(77,159,255,0.12); }
+    .contact-channel-icon {
+      width: 48px; height: 48px; border-radius: var(--r-md); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+      background: var(--glass-mid); border: 1px solid var(--border);
+    }
+    .contact-channel-label { font-family: var(--font-mono); font-size: 0.65rem; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px; }
+    .contact-channel-value { font-family: var(--font-ui); font-size: 0.95rem; color: white; font-weight: 600; }
+    .contact-form-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; color: white; margin-bottom: var(--s2); }
+    .contact-form-desc { font-size: 0.85rem; color: rgba(255,255,255,0.45); margin-bottom: var(--s6); line-height: 1.6; }
+    .contact-submit-row { display: flex; align-items: center; gap: var(--s4); margin-top: var(--s2); }
+    @media (max-width: 900px) { .contact-layout { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div class="page-transition-overlay"></div>
+<div id="loading-screen"><div class="loader-logo">EP Care Center</div><div class="loader-bar"><div class="loader-fill"></div></div><div class="loader-text">Memuat Halaman</div></div>
+<div class="aurora-bg"><div class="aurora-orb"></div><div class="aurora-orb"></div><div class="aurora-orb"></div></div>
+<canvas id="particles-canvas"></canvas>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">EP<span>Care</span>Center</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Beranda</a></li>
+      <li><a href="about.html">Tentang</a></li>
+      <li><a href="gallery.html">Galeri</a></li>
+      <li><a href="team.html">Tim</a></li>
+      <li><a href="contact.html" class="active">Kontak</a></li>
+    </ul>
+    <div class="nav-actions"><a href="dashboard.html" class="btn btn-primary btn-sm">Dashboard</a></div>
+    <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="../index.html">Beranda</a><a href="about.html">Tentang</a>
+  <a href="gallery.html">Galeri</a><a href="team.html">Tim</a><a href="contact.html" class="active">Kontak</a>
+</div>
+
+<div class="app-shell">
+  <div class="page-container">
+    <div class="contact-hero">
+      <div class="page-eyebrow reveal">Hubungi Kami</div>
+      <h1 class="page-title reveal reveal-delay-1" style="font-size:clamp(2.5rem,5vw,4rem)">
+        Ada Pertanyaan?<br /><span class="gradient-text">Kami Siap Membantu</span>
+      </h1>
+      <p class="page-subtitle reveal reveal-delay-2" style="margin:var(--s4) auto 0;text-align:center">
+        Untuk pertanyaan umum di luar sistem laporan, hubungi kami melalui kanal di bawah ini.
+      </p>
+    </div>
+
+    <div class="contact-section">
+      <div class="contact-layout">
+
+        <!-- Channels -->
+        <div class="reveal reveal-delay-1">
+          <a href="https://wa.me/6280000000000" target="_blank" rel="noopener" class="card contact-channel">
+            <div class="contact-channel-icon" style="color:var(--neon-green)">💬</div>
+            <div>
+              <div class="contact-channel-label">WhatsApp</div>
+              <div class="contact-channel-value">Chat Ketua Kelas</div>
+            </div>
+          </a>
+          <a href="https://instagram.com/ep.unisba" target="_blank" rel="noopener" class="card contact-channel">
+            <div class="contact-channel-icon" style="color:var(--neon-pink)">📸</div>
+            <div>
+              <div class="contact-channel-label">Instagram</div>
+              <div class="contact-channel-value">@ep.unisba</div>
+            </div>
+          </a>
+          <a href="mailto:angkatan25epunisba@gmail.com" class="card contact-channel">
+            <div class="contact-channel-icon" style="color:var(--neon-cyan)">📧</div>
+            <div>
+              <div class="contact-channel-label">Email</div>
+              <div class="contact-channel-value">angkatan25epunisba@gmail.com</div>
+            </div>
+          </a>
+          <div class="card" style="padding:var(--s5);margin-top:var(--s6)">
+            <div class="text-xs text-muted" style="line-height:1.7">
+              💡 Untuk laporan akademik, kendala dosen, konsultasi, atau keluhan resmi, gunakan
+              <a href="dashboard.html" style="color:var(--brand);text-decoration:none">menu Buat Laporan</a>
+              di Dashboard agar tercatat dan dapat dilacak statusnya.
+            </div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="card card-glow reveal reveal-delay-2" style="padding:var(--s8)">
+          <div class="contact-form-title">Kirim Pesan</div>
+          <div class="contact-form-desc">Form ini untuk pertanyaan umum. Pesan akan tersimpan dan direspons melalui email yang kamu cantumkan.</div>
+
+          <form id="contact-form">
+            <div class="grid-2" style="gap:var(--s4);margin-bottom:var(--s4)">
+              <div class="form-group">
+                <label class="form-label">Nama<span>*</span></label>
+                <input type="text" class="form-input" id="contact-name" placeholder="Nama lengkap" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email<span>*</span></label>
+                <input type="email" class="form-input" id="contact-email" placeholder="email@contoh.com" required />
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:var(--s4)">
+              <label class="form-label">Subjek<span>*</span></label>
+              <input type="text" class="form-input" id="contact-subject" placeholder="Topik pesanmu" required />
+            </div>
+            <div class="form-group" style="margin-bottom:var(--s2)">
+              <label class="form-label">Pesan<span>*</span></label>
+              <textarea class="form-textarea" id="contact-message" placeholder="Tulis pesanmu di sini..." required></textarea>
+            </div>
+            <div class="contact-submit-row">
+              <button type="submit" class="btn btn-primary btn-lg" id="contact-submit-btn">Kirim Pesan</button>
+              <span class="text-xs text-muted">Kami akan merespons dalam 1–2 hari kerja</span>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="page-container">
+    <div class="footer-bottom" style="padding:var(--s6) 0">
+      <span class="text-xs text-dim">© 2025 EP Care Center · Ekonomi Pembangunan FEB UNISBA</span>
+      <a href="../index.html" class="text-xs" style="color:var(--brand);text-decoration:none">← Kembali ke Beranda</a>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+<script type="module">
+  import { initCursor, initParticles, initToasts, initScrollReveal, initNavScroll, initMobileNav, initLoader, setActiveNavLink, showToast } from '../js/ui.js';
+  import { db, collection, addDoc, serverTimestamp } from '../js/firebase.js';
+
+  initCursor(); initParticles(); initToasts(); initScrollReveal();
+  initNavScroll(); initMobileNav(); initLoader(); setActiveNavLink();
+
+  const form = document.getElementById('contact-form');
+  const submitBtn = document.getElementById('contact-submit-btn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Mengirim...';
+
+    const payload = {
+      name:    document.getElementById('contact-name').value.trim(),
+      email:   document.getElementById('contact-email').value.trim(),
+      subject: document.getElementById('contact-subject').value.trim(),
+      message: document.getElementById('contact-message').value.trim(),
+      createdAt: serverTimestamp(),
+      status: 'baru'
+    };
+
+    try {
+      await addDoc(collection(db, 'contact_messages'), payload);
+      showToast({ type: 'success', title: 'Pesan Terkirim', message: 'Terima kasih, kami akan segera merespons.' });
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      showToast({ type: 'error', title: 'Gagal Mengirim', message: 'Terjadi kesalahan, silakan coba lagi.' });
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Kirim Pesan';
+    }
+  });
+</script>
+</body>
+</html>

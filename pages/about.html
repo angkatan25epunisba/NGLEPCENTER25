@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tentang — EP Care Center</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <style>
+    .about-hero { padding: var(--s20) 0 var(--s16); }
+    .about-hero-inner { max-width: 760px; }
+    .about-section { padding: var(--s16) 0; }
+    .about-feature { display: flex; gap: var(--s6); align-items: flex-start; }
+    .about-feature-icon { width: 52px; height: 52px; border-radius: var(--r-lg); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; border: 1px solid var(--border); background: var(--glass-light); }
+    .about-feature-title { font-family: var(--font-ui); font-size: 1rem; font-weight: 700; color: white; margin-bottom: var(--s2); }
+    .about-feature-desc { font-size: 0.88rem; color: rgba(255,255,255,0.5); line-height: 1.7; }
+    .vision-mission { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s6); margin-top: var(--s8); }
+    .vm-card { padding: var(--s8); }
+    .vm-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; color: white; margin-bottom: var(--s4); }
+    .vm-list { list-style: none; display: flex; flex-direction: column; gap: var(--s3); }
+    .vm-list li { display: flex; gap: var(--s3); font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+    .vm-list li::before { content: '→'; color: var(--neon-cyan); flex-shrink: 0; }
+    @media (max-width: 640px) { .vision-mission { grid-template-columns: 1fr; } .about-feature { flex-direction: column; } }
+  </style>
+</head>
+<body>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div class="page-transition-overlay"></div>
+<div id="loading-screen"><div class="loader-logo">EP Care Center</div><div class="loader-bar"><div class="loader-fill"></div></div><div class="loader-text">Memuat Halaman</div></div>
+<div class="aurora-bg"><div class="aurora-orb"></div><div class="aurora-orb"></div><div class="aurora-orb"></div></div>
+<canvas id="particles-canvas"></canvas>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">EP<span>Care</span>Center</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Beranda</a></li>
+      <li><a href="about.html" class="active">Tentang</a></li>
+      <li><a href="gallery.html">Galeri</a></li>
+      <li><a href="team.html">Tim</a></li>
+      <li><a href="contact.html">Kontak</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="dashboard.html" class="btn btn-primary btn-sm">Dashboard</a>
+    </div>
+    <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="../index.html">Beranda</a><a href="about.html" class="active">Tentang</a>
+  <a href="gallery.html">Galeri</a><a href="team.html">Tim</a><a href="contact.html">Kontak</a>
+</div>
+
+<div class="app-shell">
+  <div class="page-container">
+    <!-- Hero -->
+    <div class="about-hero">
+      <div class="about-hero-inner">
+        <div class="page-eyebrow reveal">Tentang Platform</div>
+        <h1 class="page-title reveal reveal-delay-1" style="font-size:clamp(2.5rem,5vw,4rem)">
+          Jembatan Komunikasi<br />
+          <span class="gradient-text">Mahasiswa & Akademik</span>
+        </h1>
+        <p class="page-subtitle reveal reveal-delay-2" style="max-width:600px;font-size:1.05rem">
+          EP Care Center lahir dari kebutuhan nyata mahasiswa — sebuah platform yang memungkinkan setiap
+          suara, keluhan, dan aspirasi didengar secara resmi, terstruktur, dan transparan.
+        </p>
+      </div>
+    </div>
+
+    <div class="neon-line"></div>
+
+    <!-- Story -->
+    <div class="about-section">
+      <div class="grid-2 gap-6" style="gap:var(--s10)">
+        <div class="reveal">
+          <div class="page-eyebrow mb-4">Latar Belakang</div>
+          <h2 class="section-title mb-5" style="font-size:1.8rem">Mengapa EP Care Center Dibangun?</h2>
+          <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:16px;font-size:0.92rem">
+            Mahasiswa seringkali dihadapkan pada berbagai kendala perkuliahan — dari jadwal yang bentrok,
+            masalah akademis, hingga aspirasi yang tidak tersalurkan. Proses penyampaian keluhan yang
+            tidak terstruktur membuat banyak isu terbengkalai tanpa penanganan yang jelas.
+          </p>
+          <p style="color:rgba(255,255,255,0.6);line-height:1.8;font-size:0.92rem">
+            EP Care Center hadir sebagai solusi: platform digital yang menghubungkan mahasiswa Program
+            Studi Ekonomi Pembangunan FEB UNISBA dengan Ketua Kelas sebagai mediator, yang kemudian
+            meneruskan ke dosen wali dan pihak berwenang dengan transparansi penuh.
+          </p>
+        </div>
+        <div class="card card-glow reveal reveal-delay-1">
+          <div class="page-eyebrow mb-4">Identitas Platform</div>
+          <div class="flex flex-col gap-4">
+            <div><div class="text-xs text-muted font-mono mb-1">NAMA</div><div class="text-base" style="color:white;font-weight:600">EP Care Center</div></div>
+            <div class="divider" style="margin:0"></div>
+            <div><div class="text-xs text-muted font-mono mb-1">INSTITUSI</div><div class="text-sm" style="color:rgba(255,255,255,0.7)">Program Studi Ekonomi Pembangunan<br />Fakultas Ekonomi dan Bisnis<br />Universitas Islam Bandung</div></div>
+            <div class="divider" style="margin:0"></div>
+            <div><div class="text-xs text-muted font-mono mb-1">FUNGSI</div><div class="text-sm" style="color:rgba(255,255,255,0.7)">Platform Aspirasi, Konsultasi & Keluhan Mahasiswa</div></div>
+            <div class="divider" style="margin:0"></div>
+            <div><div class="text-xs text-muted font-mono mb-1">STATUS</div><div class="flex items-center gap-2"><span style="width:8px;height:8px;border-radius:50%;background:var(--neon-green);box-shadow:0 0 8px var(--neon-green);display:inline-block;animation:pulseDot 2s ease infinite"></span><span class="text-sm" style="color:var(--neon-green)">Aktif & Beroperasi</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vision Mission -->
+    <div class="about-section" style="padding-top:0">
+      <div class="page-eyebrow reveal">Visi & Misi</div>
+      <div class="vision-mission">
+        <div class="card card-glow reveal reveal-delay-1">
+          <div class="vm-title">🎯 Visi</div>
+          <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.7">
+            Menjadi platform komunikasi akademik mahasiswa yang paling transparan, responsif, dan dipercaya
+            di lingkungan Program Studi Ekonomi Pembangunan UNISBA.
+          </p>
+        </div>
+        <div class="card reveal reveal-delay-2">
+          <div class="vm-title">🚀 Misi</div>
+          <ul class="vm-list">
+            <li>Memfasilitasi penyampaian aspirasi mahasiswa secara terstruktur dan transparan</li>
+            <li>Mempercepat respons terhadap kendala akademik dan perkuliahan</li>
+            <li>Membangun komunikasi yang sehat antara mahasiswa, ketua kelas, dan dosen</li>
+            <li>Mendokumentasikan setiap masalah untuk evaluasi berkelanjutan</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="about-section" style="padding-top:0">
+      <div class="section-header reveal"><div class="page-eyebrow">Fitur Unggulan</div><h2 class="section-title">Apa yang Membuat EP Care Center Istimewa?</h2></div>
+      <div class="grid-2 gap-6 mt-8" style="gap:var(--s6)">
+        <div class="card reveal"><div class="about-feature"><div class="about-feature-icon">⚡</div><div><div class="about-feature-title">Real-Time Tracking</div><div class="about-feature-desc">Pantau status laporanmu secara langsung menggunakan sistem ticketing profesional dengan timeline yang jelas.</div></div></div></div>
+        <div class="card reveal reveal-delay-1"><div class="about-feature"><div class="about-feature-icon">🔒</div><div><div class="about-feature-title">Keamanan Data</div><div class="about-feature-desc">Setiap laporan dilindungi dengan Firebase Security Rules — mahasiswa hanya bisa melihat laporan miliknya sendiri.</div></div></div></div>
+        <div class="card reveal reveal-delay-2"><div class="about-feature"><div class="about-feature-icon">🎭</div><div><div class="about-feature-title">Mode Anonim</div><div class="about-feature-desc">Tidak nyaman mengungkap identitas? Kirim laporan secara anonim tanpa khawatir nama dan email terlihat.</div></div></div></div>
+        <div class="card reveal reveal-delay-3"><div class="about-feature"><div class="about-feature-icon">📊</div><div><div class="about-feature-title">Dashboard Admin</div><div class="about-feature-desc">Ketua Kelas mendapat akses penuh ke panel admin dengan statistik lengkap dan manajemen laporan terpusat.</div></div></div></div>
+        <div class="card reveal"><div class="about-feature"><div class="about-feature-icon">🔔</div><div><div class="about-feature-title">Notifikasi Instan</div><div class="about-feature-desc">Terima notifikasi real-time setiap kali status laporanmu diperbarui oleh admin atau ketua kelas.</div></div></div></div>
+        <div class="card reveal reveal-delay-1"><div class="about-feature"><div class="about-feature-icon">📱</div><div><div class="about-feature-title">Mobile-First</div><div class="about-feature-desc">Desain responsif yang sempurna di semua perangkat — smartphone, tablet, maupun desktop.</div></div></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="page-container">
+    <div class="footer-bottom" style="padding:var(--s6) 0">
+      <span class="text-xs text-dim">© 2025 EP Care Center · Ekonomi Pembangunan FEB UNISBA</span>
+      <a href="../index.html" class="text-xs" style="color:var(--brand);text-decoration:none">← Kembali ke Beranda</a>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+<script type="module">
+  import { initCursor, initParticles, initToasts, initScrollReveal, initNavScroll, initMobileNav, initLoader, setActiveNavLink } from '../js/ui.js';
+  initCursor(); initParticles(); initToasts(); initScrollReveal(); initNavScroll(); initMobileNav(); initLoader(); setActiveNavLink();
+</script>
+</body>
+</html>
